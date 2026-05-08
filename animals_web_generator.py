@@ -1,5 +1,5 @@
 
-import requests
+import data_fetcher
 import os
 import webbrowser
 
@@ -60,7 +60,7 @@ def main():
     output_path = os.path.join(base_dir, "animals.html")
 
     # Load data from API
-    data = load_data(animal_name)
+    data = data_fetcher.fetch_data(animal_name)
 
     # Handle missing animal
     if not data:
