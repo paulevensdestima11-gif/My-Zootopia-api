@@ -59,11 +59,14 @@ def main():
     template_path = os.path.join(base_dir, "animals_template.html")
     output_path = os.path.join(base_dir, "animals.html")
 
-    # Load JSON data
+    # Load data from API
     data = load_data(animal_name)
 
-    # Build formatted text
-    animals_text = build_output(data)
+    # Handle missing animal
+    if not data:
+        animals_text = f'<h2>The animal "{animal_name}" doesn\'t exist.</h2>'
+    else:
+        animals_text = build_output(data)
 
     # Load HTML template
     with open(template_path, "r", encoding="utf-8") as file:
