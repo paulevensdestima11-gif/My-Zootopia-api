@@ -1,12 +1,12 @@
-import json
+
+import requests
 import os
 import webbrowser
-import requests
 
 
-def load_data():
+def load_data(animal_name):
     """Load JSON data from file"""
-    url = "https://api.api-ninjas.com/v1/animals?name=fox"
+    url = f"https://api.api-ninjas.com/v1/animals?name={animal_name}"
     headers = {
         "X-Api-Key": "tb87Gu7Kw3IcRFoDhqSX6cZuSPfEZVFCPw4X2VNR"
     }
@@ -52,6 +52,7 @@ def build_output(data):
 
 
 def main():
+    animal_name = input("Enter an animal name: ")
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     json_path = os.path.join(base_dir, "animals_data.json")
@@ -59,7 +60,7 @@ def main():
     output_path = os.path.join(base_dir, "animals.html")
 
     # Load JSON data
-    data = load_data()
+    data = load_data(animal_name)
 
     # Build formatted text
     animals_text = build_output(data)
