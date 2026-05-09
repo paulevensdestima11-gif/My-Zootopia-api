@@ -1,18 +1,6 @@
-
-import data_fetcher
 import os
 import webbrowser
-
-
-def load_data(animal_name):
-    """Load JSON data from file"""
-    url = f"https://api.api-ninjas.com/v1/animals?name={animal_name}"
-    headers = {
-        "X-Api-Key": "tb87Gu7Kw3IcRFoDhqSX6cZuSPfEZVFCPw4X2VNR"
-    }
-    res = requests.get(url, headers=headers)
-    return res.json()
-
+import data_fetcher
 
 
 def serialize_animal(animal):
@@ -27,11 +15,9 @@ def serialize_animal(animal):
 
     output = ""
 
-    # First line: name only (NO "Name:")
     if name:
         output += f"{name}\n"
 
-    # Required fields
     if diet:
         output += f"Diet: {diet}\n"
 
@@ -53,38 +39,34 @@ def build_output(data):
 
 def main():
     animal_name = input("Enter an animal name: ")
+
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
-    json_path = os.path.join(base_dir, "animals_data.json")
     template_path = os.path.join(base_dir, "animals_template.html")
     output_path = os.path.join(base_dir, "animals.html")
 
-    # Load data from API
+    # DATA COMES FROM SEPARATE MODULE
     data = data_fetcher.fetch_data(animal_name)
 
-    # Handle missing animal
+    # Milestone 3: handle missing animals
     if not data:
         animals_text = f'<h2>The animal "{animal_name}" doesn\'t exist.</h2>'
     else:
         animals_text = build_output(data)
 
-    # Load HTML template
+    # Load template
     with open(template_path, "r", encoding="utf-8") as file:
         template = file.read()
 
     # Replace placeholder
     final_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_text)
 
-    # Debug (optional, can remove later)
-    print(final_html[:300])
-
-    # Write final HTML file
+    # Write file
     with open(output_path, "w", encoding="utf-8") as file:
         file.write(final_html)
 
     print("Generated:", output_path)
 
-    # Open in browser
     webbrowser.open(f"file://{output_path}")
 
 
